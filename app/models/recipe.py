@@ -11,6 +11,7 @@ class Recipe(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(500), nullable=False)
+    ingrediants = db.Column(db.PickleType, nullable=False)
     instructions = db.Column(db.PickleType, nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
@@ -21,6 +22,7 @@ class Recipe(db.Model):
         return {
             'id': self.id,
             'name': self.name,
+            'ingrediants': self.ingrediants,
             'instructions': self.instructions,
             'created_at': self.created_at,
             'updated_at': self.updated_at
