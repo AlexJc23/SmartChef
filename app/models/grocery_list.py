@@ -1,7 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
 from datetime import datetime
-from sqlalchemy.dialects.sqlite import JSON
+
 
 
 class GroceryList(db.Model, UserMixin):
@@ -11,12 +11,12 @@ class GroceryList(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE' ), nullable=False)
-    items = db.Column(JSON)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
+    items = db.Column(db.PickleType)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 
-    users = db.relationship('User', back_populates='grocery_lists')
+    user = db.relationship('User', back_populates='grocery_lists')
 
     def to_dict(self):
         return {

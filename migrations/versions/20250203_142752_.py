@@ -1,16 +1,16 @@
 """empty message
 
-Revision ID: d2d5eb15e61a
+Revision ID: 002aae47a6d9
 Revises: 
-Create Date: 2025-01-30 19:30:40.633580
+Create Date: 2025-02-03 14:27:52.931977
 
 """
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects import sqlite
+
 
 # revision identifiers, used by Alembic.
-revision = 'd2d5eb15e61a'
+revision = '002aae47a6d9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('recipes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=500), nullable=False),
-    sa.Column('instructions', sqlite.JSON(), nullable=False),
+    sa.Column('instructions', sa.PickleType(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.PrimaryKeyConstraint('id')
@@ -52,7 +52,7 @@ def upgrade():
     op.create_table('grocery_lists',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('items', sqlite.JSON(), nullable=True),
+    sa.Column('items', sa.PickleType(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),

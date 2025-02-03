@@ -1,7 +1,6 @@
 from datetime import datetime
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
-
 class FavoriteRecipe(db.Model):
     __tablename__ = 'favorite_recipes'
 
@@ -14,9 +13,8 @@ class FavoriteRecipe(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 
-
-    users = db.relationship('User', back_populates='favorite_recipes')
-    recipes = db.relationship('Recipe', back_populates='favorite_recipes')
+    user = db.relationship('User', back_populates='favorite_recipes')
+    recipe = db.relationship('Recipe', back_populates='favorite_recipes')
 
     def to_dict(self):
         return {
