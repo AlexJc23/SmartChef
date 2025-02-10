@@ -26,8 +26,11 @@ recipe_routes = Blueprint('recipe', __name__)
 
 @recipe_routes.route('/generate', methods=['POST'])
 def generate_recipe():
+    """
+    Fetch a generated recipe with given ingredients
+    """
     ingredients = request.json.get('ingredients')
-    # print(ingredients)
+
 
     if not ingredients:
         return jsonify({'error': 'Please provide list of ingredients'}), 404
@@ -75,6 +78,6 @@ def add_recipe():
     return jsonify({
         'id': new_recipe.id,
         'name': new_recipe.name,
-        'instructions': recipe["instructions"],  # Unpickled
-        'ingredients': recipe["ingredients"]  # Unpickled
+        'instructions': recipe["instructions"],
+        'ingredients': recipe["ingredients"]
     }), 200
