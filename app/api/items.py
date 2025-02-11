@@ -79,3 +79,23 @@ def item_to_grocery_list(list_id):
     else:
         return jsonify({'error': "Item is already on grocery list."})
     return jsonify({"message": "Item added to grocery list."})
+
+@item_routes.route('/remove/<int:list_id>/<int:item_id>', methods=['DELETE'])
+@login_required
+def remove_item_from_grocery_list(list_id, item_id):
+    if not current_user:
+        return jsonify({'error': 'User must be logged in to remove items off of grocery list.'}), 401
+
+    # Ensure the list belongs to the logged-in user
+    user_list = GroceryList.query.filter_by(id=list_id, user_id=current_user.id).first()
+    if not user_list:
+        return jsonify({"error": "Forbidden: You do not own this list"}), 403
+
+    associated_item = GroceryListAssociation.query.filter_by(list_id=list_id, item_id=item_id).first()
+
+    if not associated_item:
+        return jsonify({'error': 'Item does not exist in grocery list'}), 404
+
+    db.session.delete(associated_item)
+    db.session.commit()
+    return jsonify({"message": "Item successfully removed from List"}), 200
