@@ -39,7 +39,7 @@ def generate_recipe():
         completion = client.beta.chat.completions.parse(
             model='gpt-4o-mini-2024-07-18',
             messages=[
-                {'role': 'system', 'content': 'You are an expert at structured data extraction. You will be given a list of ingrediants and give a real recipe back with the given ingredients in the given structure.'},
+                {'role': 'system', 'content': 'You are an expert at structured data extraction. You will be given a list of ingredients and give a real recipe back with the given ingredients in the given structure.'},
                 {'role': 'user', 'content': "".join(ingredients)}
             ],
             response_format=Chef,
@@ -71,7 +71,8 @@ def add_recipe():
     new_recipe = Recipe(
         name = recipe['name'],
         instructions = pickle.dumps(recipe["instructions"]),
-        ingrediants = pickle.dumps(recipe["ingredients"])
+        ingredients = pickle.dumps(recipe["ingredients"]),
+        ingredients_without_measurments = pickle.dumps(recipe['ingredients_without_measurments'])
     )
     db.session.add(new_recipe)
     db.session.commit()
@@ -79,7 +80,8 @@ def add_recipe():
         'id': new_recipe.id,
         'name': new_recipe.name,
         'instructions': recipe["instructions"],
-        'ingredients': recipe["ingredients"]
+        'ingredients': recipe["ingredients"],
+        'ingredients_without_measurments': recipe['ingredients_without_measurments']
     }), 200
 
 
