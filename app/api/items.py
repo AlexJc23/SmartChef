@@ -1,9 +1,6 @@
 from flask import Blueprint, jsonify, redirect, request
 # from app import db
 from flask_login import current_user, login_required
-from pydantic import BaseModel
-from openai import OpenAI
-from dotenv import load_dotenv
 from app.models import Recipe, Item, GroceryListAssociation, GroceryList
 from app import db
 
