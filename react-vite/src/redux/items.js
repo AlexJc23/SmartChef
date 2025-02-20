@@ -105,7 +105,7 @@ const itemsReducer = (state = initialState, action) => {
                     }
                 }
             }
-        case REMOVEFROMLIST:
+        case REMOVEFROMLIST: {
             const list = state.groceryLists[action.list_id];
             delete list[action.item_id];
             return {
@@ -115,6 +115,7 @@ const itemsReducer = (state = initialState, action) => {
                     [action.list_id]: list,
                 }
             }
+        }
         default:
             return state;
     }
