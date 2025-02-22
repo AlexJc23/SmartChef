@@ -5,6 +5,7 @@ import Layout from './Layout';
 import HomePage from '../components/Homepage';
 
 export const router = createBrowserRouter([
+
   {
     element: <Layout />,
     children: [

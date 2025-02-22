@@ -1,14 +1,27 @@
 @import "tailwindcss";
 
 
-body {
-    background-color: rgb(255, 255, 255);
-    font-family: DynaPuff, sans-serif;
-}
-/* // <weight>: Use a value from 400 to 700
-// <uniquifier>: Use a unique and descriptive class name */
+html, body {
+  font-family: "DynaPuff", sans-serif;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 
-.dynapuff-smartChefFont {
+  background: linear-gradient(-45deg, #F2AE2E, #f0b23e, #f3cc84, #f5e1bc);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+.dynapuff-dynapuff {
   font-family: "DynaPuff", serif;
   font-optical-sizing: auto;
   font-weight: 100;
