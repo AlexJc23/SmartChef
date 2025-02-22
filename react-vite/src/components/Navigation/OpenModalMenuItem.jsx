@@ -15,7 +15,7 @@ function OpenModalMenuItem({
   };
 
   return (
-    <li onClick={onClick}>{itemText}</li>
+    <p className='mx-1 text-[#F24968] cursor-pointer hover:text-blue-800' onClick={onClick}>{itemText}</p>
   );
 }
 
