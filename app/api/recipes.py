@@ -39,7 +39,7 @@ def generate_recipe():
         completion = client.beta.chat.completions.parse(
             model='gpt-4o-mini-2024-07-18',
             messages=[
-                {'role': 'system', 'content': 'You are an expert at structured data extraction. You will be given a list of ingredients and give a real recipe back with the given ingredients in the given structure.'},
+                {'role': 'system', 'content': 'You are an expert at structured data extraction. Given a list of ingredients, return a real recipe formatted as JSON with these fields: "name", "ingredients", "ingredients_without_measurments", and "instructions". Each field must be a **single string** where items are separated by a **"-"** character. Example format: "ingredient1 - ingredient2 - ingredient3". Do not use newlines, commas, or bullet points.'},
                 {'role': 'user', 'content': "".join(ingredients)}
             ],
             response_format=Chef,
@@ -49,9 +49,9 @@ def generate_recipe():
 
         return jsonify({
             'name': recipe.name,
-            'ingredients': recipe.ingredients,
-            'ingredients_without_measurments': recipe.ingredients_without_measurments,
-            'instructions': recipe.instructions
+            'ingredients': " - ".join(recipe.ingredients) if isinstance(recipe.ingredients, list) else recipe.ingredients,
+            'ingredients_without_measurments': " - ".join(recipe.ingredients_without_measurments) if isinstance(recipe.ingredients_without_measurments, list) else recipe.ingredients_without_measurments,
+            'instructions': " - ".join(recipe.instructions) if isinstance(recipe.instructions, list) else recipe.instructions
         }), 200
 
     except Exception as e:
@@ -68,21 +68,26 @@ def add_recipe():
     if not recipe:
         return jsonify({'error': 'Please provide a recipe'}), 404
 
-    new_recipe = Recipe(
-        name = recipe['name'],
-        instructions = pickle.dumps(recipe["instructions"]),
-        ingredients = pickle.dumps(recipe["ingredients"]),
-        ingredients_without_measurments = pickle.dumps(recipe['ingredients_without_measurments'])
-    )
-    db.session.add(new_recipe)
-    db.session.commit()
-    return jsonify({
-        'id': new_recipe.id,
-        'name': new_recipe.name,
-        'instructions': recipe["instructions"],
-        'ingredients': recipe["ingredients"],
-        'ingredients_without_measurments': recipe['ingredients_without_measurments']
-    }), 200
+    try:
+        new_recipe = Recipe(
+            name=recipe['name'],
+            instructions=recipe['instructions'],
+            ingredients=recipe['ingredients'],
+            ingredients_without_measurments=recipe['ingredients_without_measurments']
+        )
+        db.session.add(new_recipe)
+        db.session.commit()
+        return jsonify({
+            'id': new_recipe.id,
+            'name': new_recipe.name,
+            'instructions': new_recipe.instructions,
+            'ingredients': new_recipe.ingredients,
+            'ingredients_without_measurments': new_recipe.ingredients_without_measurments
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'Error adding recipe: {str(e)}'}), 500
 
 
 

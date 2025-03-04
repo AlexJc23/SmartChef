@@ -10,10 +10,10 @@ class Recipe(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    name = db.Column(db.String(500), nullable=False)
-    ingredients = db.Column(db.PickleType, nullable=False)
-    ingredients_without_measurments = db.Column(db.PickleType, nullable=False)
-    instructions = db.Column(db.PickleType, nullable=False)
+    name = db.Column(db.String(500), nullable=False, unique=True)
+    ingredients = db.Column(db.String(2000), nullable=False)
+    ingredients_without_measurments = db.Column(db.String(2000), nullable=False)
+    instructions = db.Column(db.String(2000), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 
