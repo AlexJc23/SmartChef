@@ -16,19 +16,20 @@ const Recipe = () => {
 
     useEffect(() => {
         if (ingredients) {
-            dispatch(thunkFetchRecipes({ingredients: ingredients}));
+            dispatch(thunkFetchRecipes({ingredients}));
             setIsLoaded(true);
         }
     }, [ingredients, dispatch]);
 
     useEffect(() => {
-        console.log("Generated Recipe:", generatedRecipe);
-        if (generatedRecipe && !hasAddedRecipe) {
+        if (generatedRecipe?.name && !hasAddedRecipe) {
             dispatch(thunkAddRecipe(generatedRecipe));
             setHasAddedRecipe(true);
         }
     }, [generatedRecipe, dispatch, hasAddedRecipe]);
 
+
+    console.log("Generated Recipe:", generatedRecipe);
 
 
     return !isLoaded ? (
@@ -39,7 +40,7 @@ const Recipe = () => {
                 <p>Search bar here</p>
                 <div>
                     <h1>{generatedRecipe?.name}</h1>
-                    <p>{generatedRecipe?.details}</p>
+                    <p>{generatedRecipe?.ingredients}</p>
                 </div>
             </div>
         </div>

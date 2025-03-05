@@ -33,7 +33,7 @@ const removeFavorite = recipe_id => ({
 
 // Grab generated Recipe
 export const thunkFetchRecipes = (ingredients) => async dispatch => {
-    const response = await csrfFetch('/api/recipes/generate', {
+    const response = await csrfFetch('/api/recipe/generate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -47,24 +47,31 @@ export const thunkFetchRecipes = (ingredients) => async dispatch => {
     } else {
         return response;
     }
+
 }
 
 // add recipe into db
 export const thunkAddRecipe = (recipe) => async dispatch => {
-    const response = await csrfFetch('/api/recipes/add', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(recipe),
-    });
+    try {
+        const response = await csrfFetch('/api/recipe/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ recipe }),
+        });
 
-    if(response.ok) {
-        const newRecipe = await response.json();
-        dispatch(add(newRecipe));
-        return newRecipe;
-    } else {
-        return response;
+        if (response.ok) {
+            const newRecipe = await response.json();
+            dispatch(add(newRecipe));
+            return newRecipe;
+        } else {
+            const error = await response.json();
+            return error;
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        return { error: err.message };
     }
 }
 

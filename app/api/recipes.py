@@ -21,6 +21,7 @@ class Chef(BaseModel):
     ingredients: list[str]
     ingredients_without_measurments: list[str]
     instructions: list[str]
+    details: str
 
 recipe_routes = Blueprint('recipe', __name__)
 
@@ -49,6 +50,7 @@ def generate_recipe():
 
         return jsonify({
             'name': recipe.name,
+            'details': recipe.details,
             'ingredients': " - ".join(recipe.ingredients) if isinstance(recipe.ingredients, list) else recipe.ingredients,
             'ingredients_without_measurments': " - ".join(recipe.ingredients_without_measurments) if isinstance(recipe.ingredients_without_measurments, list) else recipe.ingredients_without_measurments,
             'instructions': " - ".join(recipe.instructions) if isinstance(recipe.instructions, list) else recipe.instructions
@@ -73,7 +75,8 @@ def add_recipe():
             name=recipe['name'],
             instructions=recipe['instructions'],
             ingredients=recipe['ingredients'],
-            ingredients_without_measurments=recipe['ingredients_without_measurments']
+            ingredients_without_measurments=recipe['ingredients_without_measurments'],
+            details=recipe['details']
         )
         db.session.add(new_recipe)
         db.session.commit()
@@ -82,6 +85,7 @@ def add_recipe():
             'name': new_recipe.name,
             'instructions': new_recipe.instructions,
             'ingredients': new_recipe.ingredients,
+            'details': new_recipe.details,
             'ingredients_without_measurments': new_recipe.ingredients_without_measurments
         }), 200
 
