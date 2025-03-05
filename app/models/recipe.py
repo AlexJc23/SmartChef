@@ -14,6 +14,7 @@ class Recipe(db.Model):
     ingredients = db.Column(db.String(2000), nullable=False)
     ingredients_without_measurments = db.Column(db.String(2000), nullable=False)
     instructions = db.Column(db.String(2000), nullable=False)
+    details = db.Column(db.String(5000), nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, nullable=False)
 
@@ -24,6 +25,7 @@ class Recipe(db.Model):
             'id': self.id,
             'name': self.name,
             'ingredients': self.ingrediants,
+            'details': self.details,
             "ingredients_without_measurments": self.ingredients_without_measurments,
             'instructions': self.instructions,
             'created_at': self.created_at,
