@@ -6,26 +6,30 @@ import SignupFormModal from "../SignupFormModal";
 import { handleSearchChange, handleKeyDown } from "../../helperfuncs/helperfuncs";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import Loading from "../Loading";
 
 
 const HomePage = () => {
     const navigate = useNavigate();
 
     const [ingredients, setIngredients] = useState("");
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const user = useSelector(state => state.session.user);
-
+    const load = false
     // Get ingredients from cookie on mount
     useEffect(() => {
         const cookieIngredients = Cookies.get('ingredients');
         if (cookieIngredients) {
             setIngredients(cookieIngredients);
+            setIsLoaded(true);
         }
+        setIsLoaded(true);
     }, []);
 
 
 
-    return (
+    return !isLoaded ? (<Loading />) : (
         <div className="flex flex-col items-center">
             <div className="flex flex-col items-center">
                 <img className="max-h-100 mt-10" src="/4.svg" alt="SmartChef logo" />
